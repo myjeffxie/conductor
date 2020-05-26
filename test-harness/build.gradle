@@ -22,10 +22,12 @@ configurations.all {
 dependencies {
 
     testCompile project(':conductor-core')
+    testCompile project(':conductor-contribs')
     testCompile project(':conductor-jersey')
-    testCompile project(':conductor-redis-persistence').sourceSets.test.output
-    testCompile project(':conductor-mysql-persistence').sourceSets.test.output
-    testCompile project(':conductor-postgres-persistence').sourceSets.test.output
+    testCompile project(':conductor-redis-persistence')
+    testCompile project(':conductor-mysql-persistence')
+    testCompile project(':conductor-postgres-persistence')
+    testCompile project(':conductor-es6-persistence')
     testCompile project(':conductor-client')
     testCompile project(':conductor-server')
     testCompile project(':conductor-grpc-client')
