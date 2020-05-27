@@ -95,43 +95,42 @@ configure(javaProjects) {
 /**********************************
  * Coverage Tasks
  **********************************/
-//task codeCoverageReport(type: JacocoReport, group: "Coverage reports") {
-//    executionData.setFrom(fileTree(dir: project.rootDir.absolutePath, includes: ["**/build/jacoco/*.exec"]))
-//    dependsOn subprojects*.test
-//
-//    subprojects.each {
-//        sourceSets it.sourceSets.main
-//    }
-//
-//    reports {
-//        xml.enabled = true
-//        xml.destination new File("${buildDir}/reports/jacoco/report.xml")
-//        html.enabled = true
-//        html.destination new File("${buildDir}/reports/jacoco/html")
-//        csv.enabled = false
-//    }
-//    afterEvaluate {
-//        // Exclude generated files from top-level coverage report
-//        classDirectories.from = files(
-//                classDirectories.files.collect {
-//                    fileTree(
-//                            dir: it,
-//                            // Exclude es modules from code coverage reports
-//                            exclude: 'com/netflix/conductor/elasticsearch'
-//                    )
-//                }
-//        )
-//    }
-//}
-//
-//coveralls {
-//    sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
-//    jacocoReportPath = "${project.buildDir}/reports/jacoco/report.xml"
-//}
-//
-//tasks.coveralls {
-//    group = "Coverage reports"
-//    description = "Uploads the aggregated coverage report to Coveralls"
-//    dependsOn codeCoverageReport
-//}
+task codeCoverageReport(type: JacocoReport, group: "Coverage reports") {
+    executionData.setFrom(fileTree(dir: project.rootDir.absolutePath, includes: ["**/build/jacoco/*.exec"]))
+    dependsOn subprojects*.test
 
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    reports {
+        xml.enabled = true
+        xml.destination new File("${buildDir}/reports/jacoco/report.xml")
+        html.enabled = true
+        html.destination new File("${buildDir}/reports/jacoco/html")
+        csv.enabled = false
+    }
+    afterEvaluate {
+        // Exclude generated files from top-level coverage report
+        classDirectories.from = files(
+                classDirectories.files.collect {
+                    fileTree(
+                            dir: it,
+                            // Exclude es modules from code coverage reports
+                            exclude: 'com/netflix/conductor/elasticsearch'
+                    )
+                }
+        )
+    }
+}
+
+coveralls {
+    sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
+    jacocoReportPath = "${project.buildDir}/reports/jacoco/report.xml"
+}
+
+tasks.coveralls {
+    group = "Coverage reports"
+    description = "Uploads the aggregated coverage report to Coveralls"
+    dependsOn codeCoverageReport
+}
